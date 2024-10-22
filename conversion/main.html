@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conversiones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <style>
+        main{
+            background-color: #aaa;
+        } 
+        #resultado{
+            font-weight: bold;
+            font-size: 2.2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="px-4 py-2 my-2 text-center border-bottom border-top">  
+            <img class="d-block mx-auto mb-2" src="SENATI-LOGO.png" alt="" width="30%" height="30%">
+        
+            <h1 class="display-5 fw-bold">CONVERTIDOR DE KILOS</h1><hr>
+            <div class="col-lg-6 mx-auto ">
+                <img src="8474185.png" alt="" width="100px" height="80px">
+                <p class="lead mb-0">Conversiones de kilos (kg) a libras y onzas</p>
+            </div>
+        </div>
+    
+
+    <!--  -->            
+    <div class="b-example-dividor"></div>  
+        <div class="container mb-5">
+            <div class="row text-center">
+                <div class="cold-12 col-mb-4 offset mb-4">
+                    <form action="">
+                        <div class="mb-3">
+                            <label class="form-label" for="kilogramos">Cambiar: <span id="lbl-kilogramos">0 kilogramos </span> </label>
+                            <input class="form-range" type="number" min="-200" max="200" id="kilogramos" oninput="CambiarKilogramos()"
+                            placeholder="Ingrese el numero a conertir">
+                            <div class="form-text">Deslizar para cambiar el valor del kilo deseado: </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="kilogramos">Resultado</label>
+                            <div class="" id="resultado">| 1 kg | 2.204 libra | 35.274 onzas |</div>
+                        </div>
+                    </form>
+                </div>
+                &copy; Programado por luis
+            </div>
+        </div>
+        <div class="b-example-dividor mb-0"></div>   
+    
+    </main>
+    <!-- script de boostrap5 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <!-- paquetes de tensorflowjs-->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.21.0/dist/tf.min.js"></script>
+
+    <script type="text/javascript">
+        var modelo = null;
+    
+        (async () => { // Método asincrono para cargar el modelo JSON
+            console.log("Cargando modelo");
+             modelo = await tf.loadLayersModel('model.json'); // Asegúrate de que el modelo esté disponible en esta ruta
+            console.log("Modelo cargado........");
+        })();
+    
+        function CambiarKilogramos() {
+            var kg = document.getElementById("kilogramos").value; // Obtener el valor de kilogramos
+            document.getElementById("lbl-kilogramos").innerHTML = kg; // Mostrar el valor de kilogramos
+            if (modelo != null) {
+                var tensor = tf.tensor2d([[parseFloat(kg)]]); // Crear un tensor 2D para la predicción
+                var prediccion = modelo.predict(tensor).dataSync(); // Obtener la predicción
+                var libras = Math.round(prediccion[0], 1); // Primera salida: libras
+                var onzas = Math.round(prediccion[1], 1); // Segunda salida: onzas
+                document.getElementById("resultado").innerHTML = kg + " kg son: " + libras + " libras" + "<br>" + kg + " kg son: " + onzas + " onzas." ;
+                
+            } else {
+                document.getElementById("resultado").innerHTML = "Intente de nuevo más tarde.";
+            }
+        }
+    </script>
+</body>
+</html>
