@@ -130,7 +130,7 @@
     "weightsManifest": [
         {
             "paths": [
-                "conversion/group1-shard1of1.bin"
+                "group1-shard1of1.bin"
             ],
             "weights": [
                 {
